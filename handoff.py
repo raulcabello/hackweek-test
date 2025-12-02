@@ -20,24 +20,30 @@ def sum_two_numbers(a: int, b: int) -> int:
     """
     return a + b
 
-
 alice = create_react_agent(
     ollama,
-    [sum_two_numbers, create_handoff_tool(agent_name="Bob")],
+    [sum_two_numbers, create_handoff_tool(agent_name="Bob"), create_handoff_tool(agent_name="SRE",description="Transfer to SRE, she can help with Kubernetes")],
     prompt="You are Alice, an addition expert.",
     name="Alice",
 )
 
 bob = create_react_agent(
     ollama,
-    [create_handoff_tool(agent_name="Alice", description="Transfer to Alice, she can help with math")],
+    [create_handoff_tool(agent_name="Alice", description="Transfer to Alice, she can help with math"), create_handoff_tool(agent_name="SRE",description="Transfer to SRE, she can help with Kubernetes")],
     prompt="You are Bob, you speak like a pirate.",
     name="Bob",
 )
 
+sre = create_react_agent(
+    ollama,
+    [create_handoff_tool(agent_name="SRE", description="Transfer to Alice, she can help with math")],
+    prompt="You are SRE, you answer Kubernetes related question.",
+    name="SRE",
+)
+
 checkpointer = InMemorySaver()
 workflow = create_swarm(
-    [alice, bob],
+    [alice, bob, sre],
     default_active_agent="Alice"
 )
 app = workflow.compile(checkpointer=checkpointer)
@@ -53,3 +59,8 @@ turn_2 = app.invoke(
     config,
 )
 print(turn_2)
+turn_3 = app.invoke(
+    {"messages": [{"role": "user", "content": "what's a Kubernetes pod?"}]},
+    config,
+)
+print(turn_3)
