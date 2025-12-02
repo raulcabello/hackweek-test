@@ -7,4 +7,8 @@ requires-python = ">=3.11"
 dependencies = [
     "langchain>=1.1.0",
     "langchain-ollama>=1.0.0",
+    "langgraph-swarm",
 ]
+
+[tool.uv.sources]
+langgraph-swarm = { git = "https://github.com/philogicae/langgraph-swarm-py.git", rev = "langchain_v1.0" }

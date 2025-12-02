@@ -122,12 +122,14 @@ source = { virtual = "." }
 dependencies = [
     { name = "langchain" },
     { name = "langchain-ollama" },
+    { name = "langgraph-swarm" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "langchain", specifier = ">=1.1.0" },
     { name = "langchain-ollama", specifier = ">=1.0.0" },
+    { name = "langgraph-swarm", git = "https://github.com/philogicae/langgraph-swarm-py.git?rev=langchain_v1.0" },
 ]
 
 [[package]]
@@ -287,6 +289,16 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/cb/0f/88772be3301cc5ad495e77705538edbcbf7f2ccf38d21555fa26131203aa/langgraph_sdk-0.2.10.tar.gz", hash = "sha256:ab58331504fbea28e6322037aa362929799b4e9106663ac1dbd7c5ac44558933", size = 113432, upload-time = "2025-11-24T21:31:57.268Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/8b/cc/ff4ba17253d31981b047f4be52cc51a19fa28dd2dd16a880c0c595bd66bd/langgraph_sdk-0.2.10-py3-none-any.whl", hash = "sha256:9aef403663726085de6851e4e50459df9562069bd316dd0261eb359f776fd0ef", size = 58430, upload-time = "2025-11-24T21:31:56.052Z" },
+]
+
+[[package]]
+name = "langgraph-swarm"
+version = "0.1.0"
+source = { git = "https://github.com/philogicae/langgraph-swarm-py.git?rev=langchain_v1.0#1b4de8bf109f8126d6e0a3b879f3b591132ca9fe" }
+dependencies = [
+    { name = "langchain" },
+    { name = "langchain-core" },
+    { name = "langgraph" },
 ]
 
 [[package]]
