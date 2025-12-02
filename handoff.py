@@ -3,6 +3,7 @@ from langchain_ollama import ChatOllama
 from langgraph_swarm import create_handoff_tool, create_swarm
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.prebuilt import create_react_agent
+import asyncio
 
 ollama = ChatOllama(model="gpt-oss:20b", base_url="http://10.124.137.250:11434")
 
@@ -48,7 +49,7 @@ workflow = create_swarm(
 )
 app = workflow.compile(checkpointer=checkpointer)
 
-config = {"configurable": {"thread_id": "1"}}
+""" config = {"configurable": {"thread_id": "1"}}
 turn_1 = app.invoke(
     {"messages": [{"role": "user", "content": "i'd like to speak to Bob"}]},
     config,
@@ -59,8 +60,20 @@ turn_2 = app.invoke(
     config,
 )
 print(turn_2)
-turn_3 = app.invoke(
+turn_3 = app.stream(
     {"messages": [{"role": "user", "content": "what's a Kubernetes pod?"}]},
     config,
 )
-print(turn_3)
+for chunk in turn_3:
+    print(chunk, end="")
+ """
+async def astream():
+    async for chunk in app.astream_events(
+            {"messages": [{"role": "user", "content": "what's a Kubernetes pod?"}]},
+            {"configurable": {"thread_id": "1"}},
+            stream_mode="messages"
+        ):
+        print(chunk["data"], end="")
+        print("--------")
+
+asyncio.run(astream())
